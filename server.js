@@ -26,3 +26,30 @@ mongodb.MongoClient.connect(process.env.MONGODB_URL || "mongodb://localhost:2701
   });
 
 });
+
+app.post("/api/attendance",function(req,res){
+var newStudent=req.body;
+newStudent.createDate=new Date();
+
+db.collection(CLASS_COLLECTION).insertOne(newStudent,function(err,doc){
+if(err){
+  console.log(err);
+}
+else{
+  res.status(201).json(doc.ops[0]);
+}
+
+});
+});
+
+app.get("/api/attandance",function(req,res){
+db.collection(CLASS_COLLECTION).find({}).toArray(function(err,docs){
+  if(err){
+    console.log(err);
+  }
+  else{
+    res.status(200).json(docs);
+  }
+
+});
+});
